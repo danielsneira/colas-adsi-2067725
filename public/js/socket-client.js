@@ -1,47 +1,63 @@
-
-// Referencias del HTML
-const lblOnline  = document.querySelector('#lblOnline');
-const lblOffline = document.querySelector('#lblOffline');
-const txtMensaje = document.querySelector('#txtMensaje');
-const btnEnviar  = document.querySelector('#btnEnviar');
-
-
 const socket = io();
 
+const app = new Vue({
+	el: "#app",
+	data: {
+		ready: false,
+		messages: [{}],
+		serverStatus: "offline",
+		txtMensaje: "",
+		id: " ",
+		days: [
+			"Sunday",
+			"Monday",
+			"Tuesday",
+			"Wednesday",
+			"Thursday",
+			"Friday",
+			"Saturday",
+		],
+	},
+	created() {
+		socket.on("connect", () => {
+			this.serverStatus = "online";
+			console.log("Conectado");
+		});
 
+		socket.on("disconnect", () => {
+			this.serverStatus = "offline";
+			console.log("Desconectado");
+		});
 
-socket.on('connect', () => {
-    // console.log('Conectado');
+		socket.on("mensaje-servidor", (payload) => {
+			this.messages.push(payload);
+		});
+	},
+	computed: {
+		totalMessages() {
+			if (this.messages.length > 10) {
+				this.messages.shift();
+			}
+			return this.messages.length;
+		},
+	},
 
-    lblOffline.style.display = 'none';
-    lblOnline.style.display  = '';
+	methods: {
+		send() {
+			const d = new Date();
+			const mensaje = this.txtMensaje;
+			const payload = {
+				message: mensaje,
+				id: this.id,
+				fecha:
+					this.days[d.getDay()] + " " + d.getHours() + ":" + d.getMinutes(),
+			};
+			this.messages.push(payload);
 
-});
-
-socket.on('disconnect', () => {
-    // console.log('Desconectado del servidor');
-
-    lblOnline.style.display  = 'none';
-    lblOffline.style.display = '';
-});
-
-
-socket.on('enviar-mensaje', (payload) => {
-    console.log( payload )
-})
-
-
-btnEnviar.addEventListener( 'click', () => {
-
-    const mensaje = txtMensaje.value;
-    const payload = {
-        mensaje,
-        id: '123ABC',
-        fecha: new Date().getTime()
-    }
-    
-    socket.emit( 'enviar-mensaje', payload, ( id ) => {
-        console.log('Desde el server', id );
-    });
-
+			socket.emit("enviar-mensaje", payload, (id) => {
+				console.log("respuesta desde el servidor ", id);
+			});
+			this.txtMensaje = "";
+		},
+	},
 });

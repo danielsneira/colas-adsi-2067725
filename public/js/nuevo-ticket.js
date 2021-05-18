@@ -1,3 +1,1 @@
-
-
-console.log('Nuevo Ticket HTML');
+console.log("Nuevo Ticket HTML");
