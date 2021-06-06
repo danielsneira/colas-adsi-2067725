@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Nuevo Ticket</title>
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+
+	<body>
+		<div id="app" class="container">
+			<div v-show="vista == 'nuevo-ticket'" id="nuevo-ticket">
+				<h1 id="lblNuevoTicket">ticket {{totalTurnos}}</h1>
+				<div class="flex-row">
+					<a class="btn btn-primary" v-if="isDisabled" @click="vista = 'pantallas'"
+						>Pantalla publica</a
+					>
+					<button
+						:disabled="isDisabled"
+						@click="nuevoTicket"
+						v-else
+						class="btn btn-primary"
+					>
+						Generar nuevo ticket
+					</button>
+				</div>
+			</div>
+      <div v-show="vista == 'pantallas' " id="pantallas">
+        <table>
+          <tr>
+            <td valign="middle" class="ticket-actual">
+              <span id="lblTicket1" class="ticket-actual-numero"
+                >Ticket {{w.ticket}}</span
+              >
+              <br />
+              <span id="lblEscritorio1" class="ticket-actual-escritorio"
+                >Escritorio {{w.escritorio}}</span
+              >
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td>
+                    <span id="lblTicket2" class="ticket-secundario"
+                      >Ticket {{x.ticket}}</span
+                    >
+                    <br />
+                    <span id="lblEscritorio2">Escritorio {{x.escritorio}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span id="lblTicket3" class="ticket-secundario"
+                      >Ticket {{y.ticket}}</span
+                    >
+                    <br />
+                    <span id="lblEscritorio3">Escritorio {{y.escritorio}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span id="lblTicket4" class="ticket-secundario"
+                      >Ticket {{z.ticket}}</span
+                    >
+                    <br />
+                    <span id="lblEscritorio4">Escritorio {{z.escritorio}}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+		</div>
+		<script src="./socket.io/socket.io.js"></script>
+		<script src="./js/VueCDN/vue.js"></script>
+		<script src="./js/tickets.js"></script>
+	</body>
+</html>
