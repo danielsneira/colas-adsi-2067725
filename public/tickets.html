@@ -18,7 +18,7 @@
 	<body>
 		<div id="app" class="container">
 			<div v-show="vista == 'nuevo-ticket'" id="nuevo-ticket">
-				<h1 id="lblNuevoTicket">ticket {{totalTurnos}}</h1>
+				<h1 id="lblNuevoTicket">ticket {{ticketNum}}</h1>
 				<div class="flex-row">
 					<a class="btn btn-primary" v-if="isDisabled" @click="vista = 'pantallas'"
 						>Pantalla publica</a
